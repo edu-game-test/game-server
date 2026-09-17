@@ -1,3 +1,4 @@
+using GameServer.Domain.Repositories;
 using GameServer.Infrastructure.Firestore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,8 @@ public static class DependencyInjection
             throw new InvalidOperationException("Firestore:ProjectId is not configured.");
 
         services.AddSingleton(new FirestoreContext(projectId));
-        // Repositories are registered in later tasks of M2.
+        services.AddSingleton<IPlayerRepository, PlayerRepository>();
+        services.AddSingleton<IAccountRepository, AccountRepository>();
         return services;
     }
 }
