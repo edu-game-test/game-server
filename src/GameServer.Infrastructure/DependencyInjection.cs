@@ -9,13 +9,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("DefaultConnection not configured.");
-
-        // EF Core (PostgreSQL) — configured here
-        // Redis — configured here
-        // Firebase Admin SDK — configured here
-
+        // M2 registers FirestoreDb, repositories and Firebase Auth here.
         return services;
     }
 }
