@@ -1,3 +1,4 @@
+using GameServer.Infrastructure.Firestore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +10,12 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // M2 registers FirestoreDb, repositories and Firebase Auth here.
+        var projectId = configuration["Firestore:ProjectId"];
+        if (string.IsNullOrWhiteSpace(projectId))
+            throw new InvalidOperationException("Firestore:ProjectId is not configured.");
+
+        services.AddSingleton(new FirestoreContext(projectId));
+        // Repositories are registered in later tasks of M2.
         return services;
     }
 }

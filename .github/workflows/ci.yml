@@ -36,7 +36,15 @@ jobs:
       - name: Unit tests
         run: dotnet test tests/GameServer.Unit.Tests --no-build --configuration Release
 
+      - name: Start Firestore emulator
+        run: |
+          docker run -d -p 8681:8681 gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators \
+            gcloud emulators firestore start --host-port=0.0.0.0:8681 --project=test-project
+          sleep 8
+
       - name: Integration tests
+        env:
+          FIRESTORE_EMULATOR_HOST: localhost:8681
         run: dotnet test tests/GameServer.Integration.Tests --no-build --configuration Release
 
   deploy-staging:
