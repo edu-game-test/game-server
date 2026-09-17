@@ -9,8 +9,11 @@
     <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameServer.Domain\GameServer.Domain.csproj" />
+    <ProjectReference Include="..\GameServer.Application\GameServer.Application.csproj" />
   </ItemGroup>
 </Project>

@@ -1,52 +1,42 @@
+using GameServer.Application.Sessions;
+using GameServer.Domain;
+using MetaFramework.Session;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameServer.API.Controllers;
 
+[AllowAnonymous]
 [ApiController]
-[Route("auth")]
+[Route("api/v1/auth")]
 public class AuthController : ControllerBase
 {
-    /// <summary>
-    /// Registers a new player account linked to a Firebase UID.
-    /// </summary>
-    [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    private readonly ISessionService _sessions;
+
+    public AuthController(ISessionService sessions) => _sessions = sessions;
+
+    [HttpPost("session")]
+    [ProducesResponseType(typeof(SessionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-    {
-        // TODO: validate Firebase ID token, create player record
-        await Task.CompletedTask;
-        return StatusCode(StatusCodes.Status201Created, new { playerId = Guid.NewGuid().ToString() });
-    }
-
-    /// <summary>
-    /// Exchanges a Firebase ID token for a game session token.
-    /// </summary>
-    [HttpPost("login")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> CreateSession(
+        [FromBody] CreateSessionRequest request,
+        [FromServices] IGameContext gameContext,
+        CancellationToken ct)
     {
-        // TODO: verify Firebase ID token, issue JWT
-        await Task.CompletedTask;
-        return Ok(new { accessToken = string.Empty, refreshToken = string.Empty, expiresIn = 3600 });
+        var response = await _sessions.CreateAsync(request, gameContext.GameId, ct);
+        return Ok(response);
     }
 
-    /// <summary>
-    /// Issues a new access token from a valid refresh token.
-    /// </summary>
     [HttpPost("refresh")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SessionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
+    public async Task<IActionResult> Refresh(
+        [FromBody] RefreshSessionRequest request,
+        [FromServices] IGameContext gameContext,
+        CancellationToken ct)
     {
-        // TODO: validate refresh token, issue new access token
-        await Task.CompletedTask;
-        return Ok(new { accessToken = string.Empty, expiresIn = 3600 });
+        var response = await _sessions.RefreshAsync(request, gameContext.GameId, ct);
+        return Ok(response);
     }
 }
-
-public record RegisterRequest(string FirebaseIdToken, string Username);
-public record LoginRequest(string FirebaseIdToken);
-public record RefreshRequest(string RefreshToken);
