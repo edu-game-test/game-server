@@ -1,8 +1,10 @@
 using FirebaseAdmin;
+using GameServer.Application.FeatureFlags;
 using GameServer.Application.Sessions;
 using GameServer.Domain.Repositories;
 using GameServer.Infrastructure.Auth;
 using GameServer.Infrastructure.Firestore;
+
 using Google.Apis.Auth.OAuth2;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,7 @@ public static class DependencyInjection
         services.AddSingleton<IPlayerRepository, PlayerRepository>();
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddSingleton<IFlagSetRepository, FlagSetRepository>();
 
         services.Configure<JwtOptions>(opts =>
         {
