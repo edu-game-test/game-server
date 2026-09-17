@@ -1,5 +1,6 @@
 using FirebaseAdmin;
 using GameServer.Application.FeatureFlags;
+using GameServer.Application.Segmentation;
 using GameServer.Application.Sessions;
 using GameServer.Domain.Repositories;
 using GameServer.Infrastructure.Auth;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddSingleton<IFlagSetRepository, FlagSetRepository>();
+        services.AddSingleton<ISegmentSetRepository, SegmentSetRepository>();
 
         services.Configure<JwtOptions>(opts =>
         {

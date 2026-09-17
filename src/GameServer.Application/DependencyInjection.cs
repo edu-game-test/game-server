@@ -1,4 +1,5 @@
 using GameServer.Application.FeatureFlags;
+using GameServer.Application.Segmentation;
 using GameServer.Application.Segments;
 using GameServer.Application.Sessions;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<ISessionService, SessionService>();
-        services.AddSingleton<ISegmentService, NullSegmentService>();
+        services.AddSingleton<ISegmentService, SegmentService>();
         services.AddSingleton<IFlagService, FlagService>();
         return services;
     }
