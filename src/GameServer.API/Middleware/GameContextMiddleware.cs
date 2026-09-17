@@ -17,7 +17,7 @@ public sealed class GameContextMiddleware
 
     public async Task InvokeAsync(HttpContext http, HttpGameContext gameContext)
     {
-        if (http.Request.Path.StartsWithSegments("/health") || http.Request.Path.StartsWithSegments("/swagger"))
+        if (http.Request.Path.StartsWithSegments("/health") || http.Request.Path.StartsWithSegments("/swagger") || http.Request.Path.StartsWithSegments("/api/v1/admin"))
         {
             await _next(http);
             return;

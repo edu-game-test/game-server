@@ -39,6 +39,11 @@ public sealed class SegmentService : ISegmentService
         };
     }
 
+    public void Invalidate(string gameId)
+    {
+        lock (_cache) { _cache.Remove(gameId); }
+    }
+
     private async Task<SegmentSet?> GetOrLoadAsync(string gameId, CancellationToken ct)
     {
         await _lock.WaitAsync(ct);

@@ -13,4 +13,6 @@ public sealed class NullSegmentService : ISegmentService
             EvaluatedAt = DateTime.UtcNow,
             SegmentSetVersion = 0
         });
+
+    public void Invalidate(string gameId) { }
 }

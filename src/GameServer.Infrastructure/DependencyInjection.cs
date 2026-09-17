@@ -1,4 +1,5 @@
 using FirebaseAdmin;
+using GameServer.Application.Admin;
 using GameServer.Application.FeatureFlags;
 using GameServer.Application.Segmentation;
 using GameServer.Application.Sessions;
@@ -28,6 +29,10 @@ public static class DependencyInjection
         services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddSingleton<IFlagSetRepository, FlagSetRepository>();
         services.AddSingleton<ISegmentSetRepository, SegmentSetRepository>();
+        services.AddSingleton<AuditRepository>();
+        services.AddSingleton<PlayerFlagOverridesRepository>();
+
+        services.Configure<AdminOptions>(opts => { opts.ApiKey = configuration["Admin:ApiKey"] ?? ""; });
 
         services.Configure<JwtOptions>(opts =>
         {

@@ -25,6 +25,20 @@ public sealed class FlagService : IFlagService
         return flagSet?.Version ?? 0;
     }
 
+    public async Task<FlagSet?> GetFlagSetAsync(string gameId, CancellationToken ct = default)
+        => await GetOrLoadAsync(gameId, ct);
+
+    public async Task SaveFlagSetAsync(string gameId, FlagSet flagSet, CancellationToken ct = default)
+    {
+        await _repo.SaveAsync(gameId, flagSet, ct);
+        Invalidate(gameId);
+    }
+
+    public void Invalidate(string gameId)
+    {
+        lock (_cache) { _cache.Remove(gameId); }
+    }
+
     private async Task<FlagSet?> GetOrLoadAsync(string gameId, CancellationToken ct)
     {
         await _lock.WaitAsync(ct);
